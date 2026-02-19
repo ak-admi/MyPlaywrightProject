@@ -5,20 +5,34 @@ export class EmployeePage {
     private readonly addEmployeeUrl= 'https://opensource-demo.orangehrmlive.com/web/index.php/pim/addEmployee';
     private readonly listUrl='https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewEmployeeList';
     constructor(private page:Page){}
+    
+    
     async addEmployee(employee:EmployeeData) {
         await this.page.goto(this.addEmployeeUrl);
         const firstNameInput = this.page.locator('input[name="firstName"]');
-        await firstNameInput.waitFor({ state: 'visible' });
+        await firstNameInput.waitFor({ state: 'visible' , timeout: 30_000});
         await firstNameInput.fill(employee.firstName);
-        await this.page.locator('input[name="lastName"]').fill(employee.lastName);
-        const empIdInput=this.page.locator('input[name="employeeId"]');
-        await empIdInput.waitFor({ state: 'visible' });
+        const lastNameInput=this.page.locator('input[name="lastName"]');
+        await lastNameInput.clear();
+
+        await lastNameInput.fill(employee.lastName);
+
+        const empIdInput=this.page.locator('.oxd-input-group')
+                                    .filter({hasText:'Employee Id'})
+                                    .locator('input.oxd-input');
+        await empIdInput.waitFor({ state: 'visible', timeout: 30_000 });
         const empId=await empIdInput.inputValue();
-        await Promise.all([
-            this.page.waitForURL('https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewPersonalDetails**', { timeout: 30_000 }),
-             this.page.locator('button[type="submit"]').click(),
-        ]);
-        await expect(this.page.locator('.orangehrm-edit-employee-name')).toBeVisible();
+
+        await expect(firstNameInput).toHaveValue(employee.firstName);
+        await expect(lastNameInput).toHaveValue(employee.lastName);
+
+        const navigationPromise=this.page.waitForURL(
+            "https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewPersonalDetails**", { timeout: 60_000 });
+                     
+            await this.page.locator('button[type="submit"]').click()
+            await navigationPromise;
+
+            await expect(this.page.locator('.orangehrm-edit-employee-name')).toBeVisible({timeout: 30_000 });
         return empId;
     }
 

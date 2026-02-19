@@ -17,10 +17,7 @@ type ThrottleFixtures ={
 
 export const test = base.extend<ThrottleFixtures>({
     throttledPage: async ({ browser }, use) => {
-        const context = await browser.newContext({
-            baseURL: 'https://opensource-demo.orangehrmlive.com',
-        });
-
+        const context = await browser.newContext();
         const page=await context.newPage();
         try{
             const cdp =await context.newCDPSession(page);
@@ -31,7 +28,6 @@ export const test = base.extend<ThrottleFixtures>({
                 uploadThroughput: 1.5 * 1024 * 1024 / 8, // same for upload
                 latency:150, // 150ms latency
             });
-            await use(page);
         }catch{
             console.log('[throttledPage] CDP not available - running without throttle');
         }
