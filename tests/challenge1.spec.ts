@@ -64,7 +64,6 @@ test.describe('OrangeHRM - stable parallel employee tests', () => {
             workerInfo,
         )=>{
             const emp =generateEmployee(workerInfo);
-
             const loginPage=new LoginPage(throttledPage);
             const employeePage= new EmployeePage(throttledPage);
 
