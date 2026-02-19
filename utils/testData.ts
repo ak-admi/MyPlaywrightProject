@@ -1,9 +1,9 @@
 import type { WorkerInfo } from "@playwright/test";
 
 export interface EmployeeData {
-  firstName: string;
-  lastName: string;
-  fullName: string;
+    firstName: string;
+    lastName: string;
+    fullName: string;
 }
 
 /**

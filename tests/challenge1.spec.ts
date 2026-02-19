@@ -50,26 +50,26 @@
  */
 
 import { test, expect } from '../fixtures/throttledTest';
-import {LoginPage} from '../pages/LoginPage';
-import {EmployeePage} from '../pages/EmployeePage';
-import {generateEmployee} from '../utils/testData';
+import { LoginPage } from '../pages/LoginPage';
+import { EmployeePage } from '../pages/EmployeePage';
+import { generateEmployee } from '../utils/testData';
 
 const BASE = 'https://opensource-demo.orangehrmlive.com';
 
 test.describe('OrangeHRM - stable parallel employee tests', () => {
 
-    for (let i=0; i<5; i++) {
-        test(`Worker slot ${i}: Login -> Add -> Search -> Verify`, async({
-            throttledPage},
+    for (let i = 0; i < 5; i++) {
+        test(`Worker slot ${i}: Login -> Add -> Search -> Verify`, async ({
+            throttledPage },
             workerInfo,
-        )=>{
-            const emp =generateEmployee(workerInfo);
-            const loginPage=new LoginPage(throttledPage);
-            const employeePage= new EmployeePage(throttledPage);
+        ) => {
+            const emp = generateEmployee(workerInfo);
+            const loginPage = new LoginPage(throttledPage);
+            const employeePage = new EmployeePage(throttledPage);
 
             await loginPage.login();
 
-            const employeeId= await employeePage.addEmployee(emp);
+            const employeeId = await employeePage.addEmployee(emp);
 
             await employeePage.searchEmployee(emp);
 

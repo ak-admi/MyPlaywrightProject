@@ -1,10 +1,10 @@
-import {Page, expect} from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 
 export class LoginPage {
-    constructor(private page:Page){}
-    async login(username='Admin', password='admin123') {
+    constructor(private page: Page) { }
+    async login(username = 'Admin', password = 'admin123') {
         await this.page.goto("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login",
-            {waitUntil:'domcontentloaded',timeout:60_000}
+            { waitUntil: 'domcontentloaded', timeout: 60_000 }
         );
 
         const usernameInput = this.page.locator('input[name="username"]');
@@ -18,5 +18,7 @@ export class LoginPage {
         ]);
 
         await expect(
-      this.page.locator('.oxd-topbar-header-breadcrumb')
-    ).toBeVisible();}}
+            this.page.locator('.oxd-topbar-header-breadcrumb')
+        ).toBeVisible();
+    }
+}
