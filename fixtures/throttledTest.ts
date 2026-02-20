@@ -16,8 +16,8 @@ type ThrottleFixtures = {
 };
 
 export const test = base.extend<ThrottleFixtures>({
-    throttledPage: async ({ browser }, use) => {
-        const context = await browser.newContext();
+    throttledPage: async ({ browser, context }, use) => {
+        // Create a new page in the provided context
         const page = await context.newPage();
         try {
             const cdp = await context.newCDPSession(page);
@@ -28,12 +28,16 @@ export const test = base.extend<ThrottleFixtures>({
                 uploadThroughput: 1.5 * 1024 * 1024 / 8, // same for upload
                 latency: 150, // 150ms latency
             });
-        } catch {
+            console.log('[throttledPage] CDP network throttling enabled');
+        } catch (error) {
             console.log('[throttledPage] CDP not available - running without throttle');
+            console.log('[throttledPage] Error:', error instanceof Error ? error.message : String(error));
         }
+        
+        // Use the page for the test
         await use(page);
 
-        await context.close();
+        // Context cleanup is handled by Playwright automatically
     },
 });
 

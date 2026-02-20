@@ -23,7 +23,8 @@ export interface EmployeeData {
 
 export function generateEmployee(workerInfo: WorkerInfo): EmployeeData {
     const firstName = `W${workerInfo.workerIndex}Auto`;
-    const lastName = `Test${Date.now()}`;
+    // Combine timestamp with worker index and random value to ensure uniqueness
+    const lastName = `Test${Date.now()}${workerInfo.workerIndex}${Math.random().toString().slice(2, 6)}`;
     return {
         firstName,
         lastName,

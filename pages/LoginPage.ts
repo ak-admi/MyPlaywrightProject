@@ -13,7 +13,7 @@ export class LoginPage {
         await this.page.locator('input[name="password"]').fill(password);
 
         await Promise.all([
-            this.page.waitForURL("https://opensource-demo.orangehrmlive.com/web/index.php/dashboard**", { timeout: 60_000 }),
+            this.page.waitForURL("https://opensource-demo.orangehrmlive.com/web/index.php/dashboard**", { waitUntil: 'domcontentloaded',timeout: 60_000 }),
             this.page.locator('button[type="submit"]').click(),
         ]);
 
